@@ -1,0 +1,5 @@
+.idea/
+output/
+dist/
+go.mod.txt
+deptomod
