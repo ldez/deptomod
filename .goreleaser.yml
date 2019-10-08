@@ -1,0 +1,64 @@
+project_name: deptomod
+
+builds:
+  - binary: deptomod
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - 386
+      - arm
+      - arm64
+    goarm:
+      - 7
+
+    ignore:
+      - goos: darwin
+        goarch: 386
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^doc:'
+      - '^chore:'
+      - '^chore(deps):'
+      - '^test:'
+      - '^tests:'
+
+archives:
+  - id: deptomod
+    name_template: '{{ .ProjectName }}_v{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm}}v{{ .Arm }}{{ end }}'
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+
+brews:
+  - github:
+      owner: ldez
+      name: homebrew-tap
+    commit_author:
+      name: ldez
+      email: ldez@users.noreply.github.com
+    folder: Formula
+    homepage: https://github.com/ldez/deptomod
+    description: Enhanced migration from dep to go modules
+    test: |
+      system "#{bin}/deptomod --version"
+
+scoop:
+  bucket:
+    owner: ldez
+    name: scoop-bucket
+  commit_author:
+    name: ldez
+    email: ldez@users.noreply.github.com
+  homepage: https://github.com/ldez/deptomod
+  description: Enhanced migration from dep to go modules
+  license: APACHE

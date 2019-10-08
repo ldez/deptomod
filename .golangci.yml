@@ -1,0 +1,46 @@
+run:
+  deadline: 2m
+  skip-files: []
+  skip-dirs: []
+
+linters-settings:
+  govet:
+    check-shadowing: true
+  golint:
+    min-confidence: 0
+  gocyclo:
+    min-complexity: 12
+  maligned:
+    suggest-new: true
+  goconst:
+    min-len: 3
+    min-occurrences: 4
+  misspell:
+    locale: US
+
+linters:
+  enable-all: true
+  disable:
+    - gosec
+    - godox
+    - wsl
+    - dupl
+    - maligned
+    - lll
+    - prealloc
+
+issues:
+  exclude-use-default: false
+  max-per-linter: 0
+  max-same-issues: 0
+  exclude:
+    - >-
+      Error return value of
+      .((os\.)?std(out|err)\..*|.*Close|.*Flush|os\.Remove(All)?|.*printf?|os\.(Un)?Setenv).
+      is not checked
+    - >-
+      should have a package comment, unless it's in another file for this
+      package
+  exclude-rules:
+    - path: main.go
+      text: "`(Version|ShortCommit|Date)` is a global variable"
