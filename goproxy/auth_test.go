@@ -43,5 +43,4 @@ func TestTokenTransport_RoundTrip(t *testing.T) {
 	assert.True(t, ok)
 	assert.Equal(t, "user", user)
 	assert.Equal(t, "secret", pass)
-
 }
