@@ -23,16 +23,22 @@ type VersionInfo struct {
 
 // Client is the go modules proxy client.
 type Client struct {
-	proxyURL string
+	proxyURL   string
+	HTTPClient *http.Client
 }
 
 // NewClient creates a new Client.
 func NewClient(proxyURL string) *Client {
-	if proxyURL == "" {
-		return &Client{proxyURL: defaultProxyURL}
+	client := &Client{
+		HTTPClient: &http.Client{},
 	}
 
-	return &Client{proxyURL: proxyURL}
+	client.proxyURL = defaultProxyURL
+	if proxyURL != "" {
+		client.proxyURL = proxyURL
+	}
+
+	return client
 }
 
 // GetVersions gets all available module versions.
@@ -40,7 +46,7 @@ func NewClient(proxyURL string) *Client {
 func (c *Client) GetVersions(moduleName string) ([]string, error) {
 	uri := fmt.Sprintf("%s/%s/@v/list", c.proxyURL, safeModuleName(moduleName))
 
-	resp, err := http.Get(uri)
+	resp, err := c.HTTPClient.Get(uri)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +54,7 @@ func (c *Client) GetVersions(moduleName string) ([]string, error) {
 	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode/100 != 2 {
-		return nil, fmt.Errorf("invalid response: %d", resp.StatusCode)
+		return nil, fmt.Errorf("invalid response: %s [%d]", resp.Status, resp.StatusCode)
 	}
 
 	var versions []string
@@ -64,17 +70,17 @@ func (c *Client) GetVersions(moduleName string) ([]string, error) {
 // GetInfo gets information about a module version.
 //	<proxy URL>/<module name>/@v/<version>.info
 func (c *Client) GetInfo(moduleName string, version string) (*VersionInfo, error) {
-	return getInfo(fmt.Sprintf("%s/%s/@v/%s.info", c.proxyURL, safeModuleName(moduleName), version))
+	return c.getInfo(fmt.Sprintf("%s/%s/@v/%s.info", c.proxyURL, safeModuleName(moduleName), version))
 }
 
 // GetLatest gets information about the latest module version.
 //	<proxy URL>/<module name>/@latest
 func (c *Client) GetLatest(moduleName string) (*VersionInfo, error) {
-	return getInfo(fmt.Sprintf("%s/%s/@latest", c.proxyURL, safeModuleName(moduleName)))
+	return c.getInfo(fmt.Sprintf("%s/%s/@latest", c.proxyURL, safeModuleName(moduleName)))
 }
 
-func getInfo(uri string) (*VersionInfo, error) {
-	resp, err := http.Get(uri)
+func (c *Client) getInfo(uri string) (*VersionInfo, error) {
+	resp, err := c.HTTPClient.Get(uri)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +88,7 @@ func getInfo(uri string) (*VersionInfo, error) {
 	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode/100 != 2 {
-		return nil, fmt.Errorf("invalid response: %d", resp.StatusCode)
+		return nil, fmt.Errorf("invalid response: %s [%d]", resp.Status, resp.StatusCode)
 	}
 
 	info := VersionInfo{}
