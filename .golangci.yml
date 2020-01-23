@@ -28,6 +28,7 @@ linters:
     - maligned
     - lll
     - prealloc
+    - gomnd
 
 issues:
   exclude-use-default: false
