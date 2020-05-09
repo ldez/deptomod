@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// BasicAuthTransport HTTP transport for API authentication
+// BasicAuthTransport HTTP transport for API authentication.
 type BasicAuthTransport struct {
 	username string
 	password string
@@ -16,7 +16,7 @@ type BasicAuthTransport struct {
 	Transport http.RoundTripper
 }
 
-// NewBasicAuthTransport Creates a  new BasicAuthTransport
+// NewBasicAuthTransport Creates a  new BasicAuthTransport.
 func NewBasicAuthTransport(username, password string) (*BasicAuthTransport, error) {
 	if username == "" || password == "" {
 		return nil, fmt.Errorf("credentials missing")
@@ -25,7 +25,7 @@ func NewBasicAuthTransport(username, password string) (*BasicAuthTransport, erro
 	return &BasicAuthTransport{username: username, password: password}, nil
 }
 
-// RoundTrip executes a single HTTP transaction
+// RoundTrip executes a single HTTP transaction.
 func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	enrichedReq := &http.Request{}
 	*enrichedReq = *req
@@ -42,7 +42,7 @@ func (t *BasicAuthTransport) RoundTrip(req *http.Request) (*http.Response, error
 	return t.transport().RoundTrip(enrichedReq)
 }
 
-// Wrap Wrap a HTTP client Transport with the BasicAuthTransport
+// Wrap Wrap a HTTP client Transport with the BasicAuthTransport.
 func (t *BasicAuthTransport) Wrap(client *http.Client) *http.Client {
 	backup := client.Transport
 	t.Transport = backup
@@ -50,7 +50,7 @@ func (t *BasicAuthTransport) Wrap(client *http.Client) *http.Client {
 	return client
 }
 
-// Client Creates a new HTTP client
+// Client Creates a new HTTP client.
 func (t *BasicAuthTransport) Client() *http.Client {
 	return &http.Client{
 		Transport: t,

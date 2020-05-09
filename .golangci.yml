@@ -30,6 +30,9 @@ linters:
     - prealloc
     - gomnd
     - bodyclose
+    - goerr113
+    - testpackage
+    - nestif
 
 issues:
   exclude-use-default: false
