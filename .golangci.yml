@@ -33,6 +33,8 @@ linters:
     - goerr113
     - testpackage
     - nestif
+    - nlreturn
+    - noctx
 
 issues:
   exclude-use-default: false
