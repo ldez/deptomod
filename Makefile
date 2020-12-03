@@ -1,4 +1,4 @@
-.PHONY: clean check test build
+.PHONY: clean check test build package-snapshot
 
 export GO111MODULE=on
 

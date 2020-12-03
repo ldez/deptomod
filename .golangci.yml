@@ -24,6 +24,7 @@ linters:
     - gosec
     - godox
     - wsl
+    - nlreturn
     - dupl
     - maligned
     - lll
@@ -31,10 +32,13 @@ linters:
     - gomnd
     - bodyclose
     - goerr113
+    - wrapcheck
     - testpackage
+    - paralleltest
+    - tparallel
     - nestif
-    - nlreturn
     - noctx
+    - exhaustivestruct
 
 issues:
   exclude-use-default: false
@@ -50,4 +54,4 @@ issues:
       package
   exclude-rules:
     - path: main.go
-      text: "`(Version|ShortCommit|Date)` is a global variable"
+      text: "(Version|ShortCommit|Date) is a global variable"

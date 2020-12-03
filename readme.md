@@ -1,13 +1,13 @@
 # dep to go modules with sugar
 
 [![GitHub release](https://img.shields.io/github/release/ldez/deptomod.svg)](https://github.com/ldez/deptomod/releases/latest)
-[![Build Status](https://travis-ci.com/ldez/deptomod.svg?branch=master)](https://travis-ci.com/ldez/deptomod)
+[![Build Status](https://github.com/ldez/deptomod/workflows/Main/badge.svg?branch=master)](https://github.com/ldez/deptomod/actions)
 
-Simple tool to convert a project from dep to go modules, respect `source` attribute.
+A simple tool to convert a project from dep to go modules, respect `source` attribute.
 
 If you appreciate this project:
 
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg?style=for-the-badge)](https://saythanks.io/to/ldez)
+[![Sponsor](https://img.shields.io/badge/Sponsor%20me-%E2%9D%A4%EF%B8%8F-pink)](https://github.com/sponsors/ldez)
 
 ## How to use
 
