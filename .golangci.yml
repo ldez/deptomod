@@ -39,6 +39,7 @@ linters:
     - nestif
     - noctx
     - exhaustivestruct
+    - forbidigo
 
 issues:
   exclude-use-default: false
