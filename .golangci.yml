@@ -5,41 +5,74 @@ run:
 
 linters-settings:
   govet:
-    check-shadowing: true
-  golint:
-    min-confidence: 0
+    enable-all: true
+    disable:
+      - fieldalignment
   gocyclo:
-    min-complexity: 12
+    min-complexity: 15
   maligned:
     suggest-new: true
   goconst:
-    min-len: 3
-    min-occurrences: 4
+    min-len: 5
+    min-occurrences: 3
   misspell:
     locale: US
+  funlen:
+    lines: -1
+    statements: 40
+  godox:
+    keywords:
+      - FIXME
+  gofumpt:
+    extra-rules: true
+  depguard:
+    list-type: blacklist
+    include-go-root: false
+    packages:
+      - github.com/sirupsen/logrus
+      - github.com/pkg/errors
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+    disabled-checks:
+      - sloppyReassign
+      - rangeValCopy
+      - octalLiteral
+      - paramTypeCombine # already handle by gofumpt.extra-rules
+    settings:
+      hugeParam:
+        sizeThreshold: 200
 
 linters:
   enable-all: true
   disable:
-    - gosec
-    - godox
+    - maligned # deprecated
+    - interfacer # deprecated
+    - scopelint # deprecated
+    - golint # deprecated
+    - sqlclosecheck # not relevant (SQL)
+    - rowserrcheck # not relevant (SQL)
+    - cyclop # duplicate of gocyclo
+    - bodyclose # too many false positives
+    - lll
+    - dupl
     - wsl
     - nlreturn
-    - dupl
-    - maligned
-    - lll
-    - prealloc
     - gomnd
-    - bodyclose
     - goerr113
     - wrapcheck
-    - testpackage
-    - paralleltest
-    - tparallel
-    - nestif
-    - noctx
+    - exhaustive
     - exhaustivestruct
-    - forbidigo
+    - testpackage
+    - tparallel
+    - paralleltest
+    - prealloc
+    - ifshort
+    - noctx
+    - nestif
+    - forcetypeassert
 
 issues:
   exclude-use-default: false
@@ -53,6 +86,11 @@ issues:
     - >-
       should have a package comment, unless it's in another file for this
       package
+    - 'G304:'
   exclude-rules:
     - path: main.go
       text: "(Version|ShortCommit|Date) is a global variable"
+    - path: .*_test.go
+      linters:
+        - funlen
+        - forbidigo

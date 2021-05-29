@@ -54,7 +54,7 @@ func main() {
 	flags.StringVarP(&cfg.Output, "output", "o", "./go.mod.txt", "The output file.")
 
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 }
@@ -76,7 +76,7 @@ func run(cfg config) error {
 
 	ew.writef("module %s\n", cfg.ModuleName)
 	ew.writeln()
-	ew.writeln("go 1.13")
+	ew.writeln("go 1.16")
 	ew.writeln()
 	ew.writeln("require (")
 
@@ -124,7 +124,7 @@ func convert(dir string) (modFile, error) {
 			version := getVersion(project)
 			info, err := client.GetInfo(project.Name, version)
 			if err != nil {
-				fmt.Println(project.Name, err)
+				log.Println(project.Name, err)
 			} else {
 				version = info.Version
 			}
@@ -139,7 +139,7 @@ func convert(dir string) (modFile, error) {
 
 			info, err := client.GetInfo(source, version)
 			if err != nil {
-				fmt.Println(project.Name, project.Source, err)
+				log.Println(project.Name, project.Source, err)
 			} else {
 				version = info.Version
 			}

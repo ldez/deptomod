@@ -69,7 +69,7 @@ func (c *Client) GetVersions(moduleName string) ([]string, error) {
 
 // GetInfo gets information about a module version.
 //	<proxy URL>/<module name>/@v/<version>.info
-func (c *Client) GetInfo(moduleName string, version string) (*VersionInfo, error) {
+func (c *Client) GetInfo(moduleName, version string) (*VersionInfo, error) {
 	return c.getInfo(fmt.Sprintf("%s/%s/@v/%s.info", c.proxyURL, safeModuleName(moduleName), version))
 }
 
@@ -103,7 +103,7 @@ func (c *Client) getInfo(uri string) (*VersionInfo, error) {
 func safeModuleName(name string) string {
 	var to []byte
 	for _, r := range name {
-		if 'A' <= r && r <= 'Z' {
+		if 'A' <= r && r <= 'Z' { // nolint:gocritic
 			to = append(to, '!', byte(unicode.ToLower(r)))
 		} else {
 			to = append(to, byte(r))
